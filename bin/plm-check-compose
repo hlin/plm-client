@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+from __future__ import print_function
+import argparse
+from plm_client.client import Client
+from plm_client.compose import Compose
+from plm_client.check_compose import check_compose
+from plm_client.constants import SERVERS
+
+
+def parse_args():
+    """ Return argparser object """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('server', choices=SERVERS.keys())
+    parser.add_argument('compose_path', help='path to a compose')
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    compose = Compose(args.compose_path)
+    # Sanity-check that this composeinfo is valid:
+    print('found %s compose' % compose.info.compose.id)
+    url = SERVERS[args.server]
+    client = Client(url)
+    check_compose(compose, client)
+
+
+if __name__ == '__main__':
+    main()

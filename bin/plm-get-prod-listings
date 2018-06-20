@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+# CLI replacement for "brew call getProductListings"
+from pprint import pprint
+import argparse
+from plm_client.client import Client
+from plm_client.constants import SERVERS
+
+
+def parse_args():
+    """ Return argparser object """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('product_label', help='eg. "RHEL-7.6"')
+    parser.add_argument('build', help='build NVR, eg. "nmap-6.40-13.el7"')
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    url = SERVERS['brew']
+    client = Client(url)
+    listings = client.get_product_listings(args.product_label, args.build)
+    pprint(listings)
+
+
+if __name__ == '__main__':
+    main()
