@@ -26,7 +26,7 @@ Example:
 
 
 plm-get-product-listings
-========================
+------------------------
 
 This is a drop-in replacement for the ``brew call getProductListings`` CLI
 command.
