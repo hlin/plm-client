@@ -31,6 +31,21 @@ plm-check-compose
 
 This tool sanity-checks a compose's layout against product-listings-manager.
 
+.. code-block:: shell
+
+    $ plm-check-compose -h
+     usage: plm-check-compose [-h]
+                              {brew,dev1-xmlrpc,local-xmlrpc,local,dev1}
+                              compose_path
+
+     positional arguments:
+       {brew,dev1-xmlrpc,local-xmlrpc,local,dev1}
+       compose_path          path to a compose
+
+    $ plm-check-compose brew http://example.com/nightly/latest-RHEL-7
+      ...(checks the compose against brew's getProductListings.
+      Warning: this takes a while.)
+
 The idea is to put a bit of load on the product-listings-manager web service
 and perform a simple "integration" test.
 
