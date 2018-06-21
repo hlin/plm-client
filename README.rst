@@ -25,6 +25,30 @@ Example:
     # }
 
 
+plm-check-compose
+-----------------
+
+This tool sanity-checks a compose's layout against product-listings-manager.
+
+The idea is to put a bit of load on the product-listings-manager web service
+and perform a simple "integration" test.
+
+For each build in the compose, ``plm-check-compose`` will:
+
+* Query the "product-listings" API for the product + build
+
+* Ensure that every RPM is present in prod-listings and routed to the
+  appropriate destination arches.
+
+TODO:
+
+* Make multiple calls against different product-listings-manager environments
+  (brew, dev, stage, prod) and compare the data to identify any differences
+  in implementations.
+
+* Measure and store the (wall clock) response time for each call in order to
+  track the service's performance.
+
 plm-get-product-listings
 ------------------------
 
