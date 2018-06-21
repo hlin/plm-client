@@ -1,7 +1,8 @@
 product-listings-manager client
 ===============================
 
-Python client to the product-listings-manager HTTP interface.
+Python client to the `product-listings-manager
+<https://github.com/ktdreyer/product-listings-manager>`_ HTTP interface.
 
 Example:
 
