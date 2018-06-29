@@ -48,8 +48,9 @@ class Compose(productmd.compose.Compose):
                         "Server" or "Tools"
         :type variant: ``str``
 
-        :return: composedb's "variant", eg "Server-7.5" for RHEL, or
-                 "Server-RH7-CEPH-TOOLS-2".
+        :return: composedb's "variant". Examples:
+                  "Server-7.5" or "Server-7.5-optional" for RHEL 7.
+                  "Server-RH7-CEPH-TOOLS-2" for RHCEPH 2.
         :rtype: ``str``
         """
         if self.info.release.short == 'RHEL':
