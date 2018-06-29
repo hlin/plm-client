@@ -29,8 +29,16 @@ class ProductVariantListing(defaultdict):
 
 class Product(object):
     def __init__(self):
-        self.variants = set()
-        self.builds = set()
+        self._variants = {}
+        self._builds = {}
+
+    @property
+    def builds(self):
+        return self._builds.values()
+
+    @property
+    def variants(self):
+        return self._builds.values()
 
     def get_build(self, nevra):
         """
@@ -42,12 +50,10 @@ class Product(object):
         :return: Variant
         :rtype: ``plm_client.variant.Variant``
         """
-        found = [build for build in self.builds if build.nevra == nevra]
-        if found:
-            return found[0]
-        build = Build(nevra)
-        self.builds.add(build)
-        return build
+        if nevra in self._builds:
+            return self._builds[nevra]
+        self._builds[nevra] = Build(nevra)
+        return self._builds[nevra]
 
     def get_variant(self, name):
         """
@@ -59,12 +65,10 @@ class Product(object):
         :return: Variant
         :rtype: ``plm_client.variant.Variant``
         """
-        found = [variant for variant in self.variants if variant.name == name]
-        if found:
-            return found[0]
-        variant = Variant(name)
-        self.variants.add(variant)
-        return variant
+        if name in self._variants:
+            return self._variants[name]
+        self._variants[name] = Variant(name)
+        return self._variants[name]
 
     @classmethod
     def from_compose(klass, compose):
