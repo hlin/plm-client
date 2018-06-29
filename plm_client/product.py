@@ -44,11 +44,11 @@ class Product(object):
         """
         Get a new or existing ``Build`` object for this product.
 
-        :param name: Variant name according to composedb.
-        :type name: ``str``
+        :param nevra: Build epoch name-version-release arch.
+        :type nevra: ``str``
 
-        :return: Variant
-        :rtype: ``plm_client.variant.Variant``
+        :return: Build
+        :rtype: ``plm_client.build.Build``
         """
         if nevra in self._builds:
             return self._builds[nevra]
