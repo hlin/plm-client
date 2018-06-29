@@ -99,8 +99,8 @@ class Product(object):
                 # "arch" is this variant's arch, eg. "x86_64".
                 for build_nevra, rpm_data in arch_data.items():
                     # XXX hack for testing
-                    # Same issue with xsom and rngom
-                    #if not build_nevra.startswith('xsom'):
+                    # Some issues with xsom, rngom, nuxwdog
+                    #if not build_nevra.startswith('nuxwdog'):
                     #    continue
                     build = product.get_build(build_nevra)
                     # build.nvr is like "ceph-12.2.5-25.el7cp"
