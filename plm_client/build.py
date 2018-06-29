@@ -81,5 +81,43 @@ class Build(object):
                     # print('mapping %s to %s as variant arch %s' % (rpm.nevra, variant, variant_arch))
                     self.map_rpm(variant, rpm, variant_arch)
 
+    def map_srcs(self):
+        """
+        Record mappings for all src rpms
+        """
+        for rpm in self.rpms:
+            if rpm.arch == 'src':
+                # print('calling map_src(%s)' % rpm.nevra)
+                self.map_src(rpm)
+
+    def map_src(self, rpm):
+        """
+        Record mappings for this src rpm.
+
+        products.py maps a build's srpm to *all* the arches for each variant
+        where the srpm was already present.
+
+        In other words, if a variant has builds going to "x86_64" and
+        "ppc64le", *and* it already has an srpm, the srpm should also go to
+        x86_64 and ppc64le.
+        """
+        assert rpm.arch == 'src'
+        for variant, mapping in self.mappings.items():
+            if rpm.nvr not in mapping or 'src' not in mapping[rpm.nvr]:
+                # If the compose never put this src rpm in this variant, don't
+                # put it in here, either.
+                continue
+            dest_arches = set()
+            for arch_data in mapping.values():
+                # "arch_data" for this rpm nvr is like:
+                #   {'noarch': ['x86_64']}
+                #  or
+                #   {'i686': ['x86_64'],
+                #    'x86_64': ['x86_64']}
+                for arches in arch_data.values():
+                    dest_arches.update(arches)
+            for dest_arch in dest_arches:
+                self.map_rpm(variant, rpm, dest_arch)
+
     def __repr__(self):
         return '%s(%s)' % (self.__class__.__name__, self.nevra)

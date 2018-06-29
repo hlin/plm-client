@@ -108,8 +108,9 @@ class Product(object):
                         rpm = build.get_rpm(rpm_nevra)
                         rpm.arch_listings.append({variant: arch})
                         build.map_rpm(variant, rpm, arch)
-                    # Map any debuginfo rpms explicitly.
+                    # Map any src and debuginfo rpms explicitly.
                     # (We must do this after the end of the previous loop here,
                     # after build.mappings has been populated.)
+                    build.map_srcs()
                     build.map_debuginfos()
         return product
