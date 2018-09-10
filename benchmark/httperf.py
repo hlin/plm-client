@@ -79,7 +79,6 @@ def benchmark_rest(url):
 #benchmark_xmlrpc('http://prodlistings-dev1.usersys.redhat.com/xmlrpc')
 #benchmark_xmlrpc('https://brewhub.stage.engineering.redhat.com/brewhub')
 #benchmark_xmlrpc('https://brewhub.engineering.redhat.com/brewhub')
-#benchmark_xmlrpc('https://brewhub.engineering.redhat.com/brewhub')
 #benchmark_rest('http://prodlistings-dev1.usersys.redhat.com')
 #benchmark_rest('https://prodlistings.stage.engineering.redhat.com')
 benchmark_rest('http://localhost:5000')
