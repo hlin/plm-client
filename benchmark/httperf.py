@@ -30,10 +30,18 @@ def run(cmd):
 def get(url, sessions=100):
     """ GET a URL with httperf. """
     o = urlparse(url)
+    port = o.port
+    if port is None:
+        if o.scheme == 'http':
+            port = 80
+        elif o.scheme == 'https':
+            port = 443
+        else:
+            raise RuntimeError(o)
     cmd = ['httperf',
            '--hog',
            '--server', o.hostname,
-           '--port', str(o.port),
+           '--port', str(port),
            #'--add-header', 'Accept: application/json\n',
            '--uri', o.path,
            '--num-conns', str(sessions)]
