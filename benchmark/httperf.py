@@ -48,7 +48,7 @@ def get(url, sessions=100):
     run(cmd)
 
 
-def post(url, content, sessions=20):
+def post(url, content, sessions=100):
     """ POST a URL with httperf. """
     o = urlparse(url)
     content = content.replace('"', '\\"')
