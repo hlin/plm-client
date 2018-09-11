@@ -30,6 +30,9 @@ def run(cmd):
 def get(url, sessions=100):
     """ GET a URL with httperf. """
     o = urlparse(url)
+    ssl = None
+    if o.scheme == 'https':
+        ssl = '--ssl'
     port = o.port
     if port is None:
         if o.scheme == 'http':
@@ -45,23 +48,43 @@ def get(url, sessions=100):
            #'--add-header', 'Accept: application/json\n',
            '--uri', o.path,
            '--num-conns', str(sessions)]
+    if ssl:
+        cmd.append(ssl)
     run(cmd)
 
 
 def post(url, content, sessions=100):
     """ POST a URL with httperf. """
     o = urlparse(url)
+    ssl = None
+    if o.scheme == 'https':
+        ssl = '--ssl'
+    port = o.port
+    if port is None:
+        if o.scheme == 'http':
+            port = 80
+        elif o.scheme == 'https':
+            port = 443
+        else:
+            raise RuntimeError(o)
     content = content.replace('"', '\\"')
     template = dedent("""
 {path} method=POST contents="{content}"
 """)
     config = template.format(path=o.path, content=content)
+    print(config)
     with tempfile.NamedTemporaryFile(mode='w+') as temp:
         temp.write(config)
         temp.flush()
         wsesslog = '%s,0,%s' % (sessions, temp.name)
-        cmd = ['httperf', '--hog', '--server', o.hostname, '--port', '80',
+        cmd = ['httperf',
+               '--hog',
+               '--server', o.hostname,
+               '--port', str(port),
+               ssl,
                '--method', 'POST', '--wsesslog', wsesslog]
+        if ssl:
+            cmd.append(ssl)
         run(cmd)
 
 
@@ -80,5 +103,5 @@ def benchmark_rest(url):
 #benchmark_xmlrpc('https://brewhub.stage.engineering.redhat.com/brewhub')
 #benchmark_xmlrpc('https://brewhub.engineering.redhat.com/brewhub')
 #benchmark_rest('http://prodlistings-dev1.usersys.redhat.com')
-#benchmark_rest('https://prodlistings.stage.engineering.redhat.com')
-benchmark_rest('http://localhost:5000')
+benchmark_rest('https://prodlistings.stage.engineering.redhat.com')
+#benchmark_rest('http://localhost:5000')
